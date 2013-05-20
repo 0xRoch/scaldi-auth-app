@@ -1,13 +1,14 @@
 package controllers.auth
 
 import play.api.mvc._
-import scaldi.{Injector, Injectable}
+import scaldi.{Module, Injector, Injectable}
 
-object Application extends Controller {
-  
+class Application(implicit ibj: Injector) extends Controller with Injectable {
+  val secure = inject [SecurityService] (identified by 'secure and by default new SecuritySample)
+
   def index = Action {
     // inject ModSec here
-    ModSec.secure.authenticate("myuser@gmail.com", "secret") match {
+    secure.authenticate("myuser@gmail.com", "secret") match {
       case true => Ok
       case _ => Forbidden
     }
@@ -15,14 +16,14 @@ object Application extends Controller {
   
 }
 
-trait SecurityModule {
+trait SecurityService {
   def authenticate(username: String, password: String): Boolean
 }
  
-class SecuritySample extends SecurityModule with Injectable {
+class SecuritySample extends SecurityService with Injectable {
   def authenticate(username: String, password: String): Boolean = false
 }
- 
-class ModSec(implicit inj: Injector) extends Injectable {
-  def secure = inject [SecurityModule] (identified by 'secure and by default new SecuritySample)
+
+class AuthModule extends Module {
+  binding to new Application
 }
