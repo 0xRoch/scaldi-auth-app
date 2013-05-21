@@ -13,10 +13,9 @@ object ApplicationBuild extends Build {
   )
 
   lazy val auth = file("modules/auth")
-  lazy val scaldi = uri("git://github.com/D-Roch/scaldi.git")
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
     // Add your own project settings here      
-  ).dependsOn(auth).dependsOn(scaldi)
+  ).dependsOn(auth)
 
 }

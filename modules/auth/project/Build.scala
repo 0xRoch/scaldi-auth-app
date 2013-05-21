@@ -8,13 +8,11 @@ object ApplicationBuild extends Build {
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
-
+    "org.angelsmasterpiece.scaldi" %% "scaldi" % "0.1.1"
   )
 
-  lazy val scaldi = uri("git://github.com/D-Roch/scaldi.git")
-  
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
-  ).dependsOn(scaldi)
+    resolvers += "Angelsmasterpiece repo" at "https://raw.github.com/OlegIlyenko/angelsmasterpiece-maven-repo/master"
+  )
 
 }
